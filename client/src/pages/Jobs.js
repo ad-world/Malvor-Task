@@ -4,7 +4,6 @@ import axios from 'axios'
 export default function Jobs() {
     const [docs, setDocs] = useState([])
     const [loading, setLoading] = useState(true)
-    const [zero, setZero] = useState(true)
 
     useEffect(() => {
         var handle = setInterval(getJobs, 1000);
@@ -16,17 +15,10 @@ export default function Jobs() {
 
 
     function getJobs() {
-        axios.get('/jobs')
+        axios.get('http://localhost:8080/jobs')
             .then((res) => {
                 setDocs(res.data)
                 setLoading(false)
-                if (docs.length > 0) {
-                    setZero(false)
-                }
-                console.log(docs)
-            })
-            .catch((err) => {
-                console.error(err)
             })
     }
     return (
@@ -45,8 +37,8 @@ export default function Jobs() {
                 </thead>
                 <tbody>
                     {loading ? <tr><td>Loading</td></tr> : <></>}
-                    {docs.length <= 0 ? <tr><td>Add More Tasks Below</td></tr> : docs.map((doc) => {
-                        // console.log(docs)
+                    {docs.length === 0 ? <tr><td>Add More Tasks Below</td></tr> : docs.map((doc) => {
+                        // console.log(doc)
                         return (
                             <tr key={doc.name}>
                                 <td>{doc.name}</td>

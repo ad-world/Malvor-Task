@@ -37,7 +37,6 @@ if(process.env.NODE_ENV == 'production'){
 
 app.get('/jobs', async (req, res) => {
     let docs = await QueueItem.find({ time: {$gt: 0}})
-
     if(docs.length > 0){
         update(docs[0])
     }
