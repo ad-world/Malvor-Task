@@ -16,7 +16,7 @@ export default function AddJob() {
 
 
     function getJobs() {
-        axios.get('http://localhost:8080/jobs')
+        axios.get('/jobs')
             .catch((err) => {
                 console.error(err)
             })
@@ -31,7 +31,7 @@ export default function AddJob() {
 
         console.log(data)
 
-        axios.post('http://localhost:8080/add-job', data).then(() => console.log('done'))
+        axios.post('/add-job', data).then(() => console.log('done'))
         window.location.href = '/'
     }
     return (
