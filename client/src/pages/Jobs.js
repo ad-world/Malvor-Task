@@ -16,7 +16,7 @@ export default function Jobs() {
 
 
     function getJobs() {
-        axios.get('http://localhost:8080/jobs')
+        axios.get('/jobs')
             .then((res) => {
                 setDocs(res.data)
                 setLoading(false)
