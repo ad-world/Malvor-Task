@@ -1,9 +1,8 @@
 const QueueItem = require('./models/QueueItem')
 const db = require('./config')
 const path = require('path')
-const bodyParser = require('body-parser')
+const cors = require('cors')
 
-const mongo = "mongodb+srv://malvor:malvor@malvor-task.dzsgm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
 
 const express = require('express')
@@ -11,7 +10,10 @@ const express = require('express')
 const PORT = process.env.PORT || 8080;
 
 const app = express()
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(cors())
 
 const update = (doc) => {
     doc.time = doc.time - 1;
@@ -19,39 +21,27 @@ const update = (doc) => {
 }
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/views/index.html')
+    res.sendFile(path.join(__dirname, 'client', 'public', 'index.html'))
 })
 
 
 app.get('/jobs', async (req, res) => {
-    await QueueItem.find({time:  { $gt: 0 }}, (err, docs) => {
-        if(err){
-            console.error(err)
-        } else {
-            setInterval(
-                () => {
-                    update(docs[0])
-                    
-                },
-                1000
-            )
-            res.send(docs)
-            
-        }
-    })
+    let docs = await QueueItem.find({ time: {$gt: 0}})
+
+    if(docs.length > 0){
+        update(docs[0])
+    }
+    res.send(docs)
 })
 
-app.post('/add-job', async (req, res) => {
+app.post('/add-job', async (req, res) => {    
     var newItem = new QueueItem({
         name: req.body.name,
-        time: parseInt(req.body.time),
-        done: false
+        time: req.body.time,
     })
 
     await newItem.save()
-
-    res.redirect('/')
-
+    res.redirect('back')
 })
 
 app.listen(PORT, () => console.log(`server running at port:${PORT}`))
