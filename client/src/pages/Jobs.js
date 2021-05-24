@@ -23,6 +23,7 @@ export default function Jobs() {
                 if (docs.length > 0) {
                     setZero(false)
                 }
+                console.log(docs)
             })
             .catch((err) => {
                 console.error(err)
@@ -44,7 +45,7 @@ export default function Jobs() {
                 </thead>
                 <tbody>
                     {loading ? <tr><td>Loading</td></tr> : <></>}
-                    {docs.length ? <tr><td>Add More Tasks Below</td></tr> : docs.map((doc) => {
+                    {docs.length <= 0 ? <tr><td>Add More Tasks Below</td></tr> : docs.map((doc) => {
                         // console.log(docs)
                         return (
                             <tr key={doc.name}>
