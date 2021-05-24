@@ -41,7 +41,7 @@ export default function AddJob() {
                 <label class="form-label">Task Name</label>
                 <input name="name" class="form-control" onChange={(e) => setName(e.target.value)} placeholder="name" />
                 <label class="form-label">Task Time</label>
-                <input name="time" class="form-control" onChange={(e) => setTime(e.target.value)} placeholder="time" />
+                <input name="time" class="form-control" onChange={(e) => setTime(e.target.value)} placeholder="time in seconds" />
                 <input type="button" onClick={handleSubmit} value="Submit" className="btn btn-primary mt-4"/>
             </form>
         </div>
