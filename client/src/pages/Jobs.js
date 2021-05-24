@@ -4,21 +4,25 @@ import axios from 'axios'
 export default function Jobs() {
     const [docs, setDocs] = useState([])
     const [loading, setLoading] = useState(true)
+    const [zero, setZero] = useState(true)
 
-    useEffect(()=>{
-        var handle=setInterval(getJobs,1000);    
-    
-        return ()=>{
-          clearInterval(handle);
+    useEffect(() => {
+        var handle = setInterval(getJobs, 1000);
+
+        return () => {
+            clearInterval(handle);
         }
-      });
+    });
 
 
     function getJobs() {
-        axios.get('/jobs')
+        axios.get('http://localhost:8080/jobs')
             .then((res) => {
                 setDocs(res.data)
                 setLoading(false)
+                if (docs.length > 0) {
+                    setZero(false)
+                }
             })
             .catch((err) => {
                 console.error(err)
@@ -28,23 +32,28 @@ export default function Jobs() {
         <div className="container">
             <h1>Queue List</h1>
             <table className="table mx-auto">
-            <tr>
-                <th>
-                    Task Name
-                </th>
-                <th>
-                    Time Remaining (s)
-                </th>
-            </tr>
-            {!loading && docs.length === 0 ? <p>Add More Tasks Below</p> : <></>}
-            {loading && docs.length > 0 ? <p>Loading</p> : docs.map((doc) => {
-                return (
+                <thead>
                     <tr>
-                        <td>{doc.name}</td>
-                        <td>{doc.time}</td>
+                        <th>
+                            Task Name
+                        </th>
+                        <th>
+                            Time Remaining (s)
+                        </th>
                     </tr>
-                )
-            })}
+                </thead>
+                <tbody>
+                    {loading ? <tr><td>Loading</td></tr> : <></>}
+                    {zero ? <tr><td>Add More Tasks Below</td></tr> : docs.map((doc) => {
+                        // console.log(docs)
+                        return (
+                            <tr key={doc.name}>
+                                <td>{doc.name}</td>
+                                <td>{doc.time}</td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
             </table>
             <a href="/add">Add More Tasks</a>
         </div>
