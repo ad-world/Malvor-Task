@@ -44,7 +44,7 @@ export default function Jobs() {
                 </thead>
                 <tbody>
                     {loading ? <tr><td>Loading</td></tr> : <></>}
-                    {zero ? <tr><td>Add More Tasks Below</td></tr> : docs.map((doc) => {
+                    {docs.length ? <tr><td>Add More Tasks Below</td></tr> : docs.map((doc) => {
                         // console.log(docs)
                         return (
                             <tr key={doc.name}>
