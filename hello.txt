@@ -1,2 +1,2 @@
 started at: 12:02 AM May 24th 2021
-finished at: ---
+finished at: 4:50 PM May 25th 2021 - would've been a lot earlier but the app just didn't want to work in production

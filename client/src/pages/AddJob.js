@@ -29,8 +29,6 @@ export default function AddJob() {
             time,
         }
 
-        console.log(data)
-
         axios.post('/api/add-job', data).then(() => console.log('done'))
         window.location.href = '/'
     }

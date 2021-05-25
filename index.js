@@ -23,7 +23,6 @@ const update = (doc) => {
 
 app.use('/api/jobs', async (req, res) => {
     let docs = await QueueItem.find({ time: { $gt: 0 } })
-    // console.log(docs)
     if (docs.length > 0) {
         update(docs[0])
     }
@@ -48,16 +47,6 @@ console.log(__dirname)
 app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
 })
-
-// if (process.env.NODE_ENV == 'production') {
-
-// } else {
-//     app.use('/', (req, res) => {
-//         res.sendFile(path.join(__dirname, 'client', 'public', 'index.html'))
-//     })
-
-// }
-
 
 
 app.listen(PORT, () => console.log(`server running at port:${PORT}`))

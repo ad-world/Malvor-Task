@@ -18,11 +18,7 @@ export default function Jobs() {
         axios.get('/api/jobs')
             .then((res) => {
                 if(res.data.length > 0){
-                    console.log(typeof res.data)
-                    console.log(res.data)
                     setDocs(res.data, [1])
-                    // console.log(docs)
-                    // console.log(Array.isArray(docs))
                 }
                 setLoading(false)
             })
@@ -48,7 +44,6 @@ export default function Jobs() {
                     
                     {loading ? <tr><td>Loading</td></tr> : <></>}
                     {docs && docs.map((doc) => {
-                        // console.log(doc)
                         return (
                             <tr key={doc.name}>
                                 <td>{doc.name}</td>
