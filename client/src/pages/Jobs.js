@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 export default function Jobs() {
-    const [docs, setDocs] = useState([])
+    const [docs, setDocs] = useState([], 0)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -15,10 +15,19 @@ export default function Jobs() {
 
 
     function getJobs() {
-        axios.get('/jobs')
+        axios.get('/api/jobs')
             .then((res) => {
-                setDocs(res.data)
+                if(res.data.length > 0){
+                    console.log(typeof res.data)
+                    console.log(res.data)
+                    setDocs(res.data, [1])
+                    // console.log(docs)
+                    // console.log(Array.isArray(docs))
+                }
                 setLoading(false)
+            })
+            .catch((err) => {
+                console.error(err)
             })
     }
     return (
@@ -36,8 +45,9 @@ export default function Jobs() {
                     </tr>
                 </thead>
                 <tbody>
+                    
                     {loading ? <tr><td>Loading</td></tr> : <></>}
-                    {docs.length === 0 ? <tr><td>Add More Tasks Below</td></tr> : docs.map((doc) => {
+                    {docs && docs.map((doc) => {
                         // console.log(doc)
                         return (
                             <tr key={doc.name}>

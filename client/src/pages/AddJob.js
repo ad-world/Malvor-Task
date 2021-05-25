@@ -16,7 +16,7 @@ export default function AddJob() {
 
 
     function getJobs() {
-        axios.get('/jobs')
+        axios.get('/api/jobs')
             .catch((err) => {
                 console.error(err)
             })
@@ -31,7 +31,7 @@ export default function AddJob() {
 
         console.log(data)
 
-        axios.post('/add-job', data).then(() => console.log('done'))
+        axios.post('/api/add-job', data).then(() => console.log('done'))
         window.location.href = '/'
     }
     return (

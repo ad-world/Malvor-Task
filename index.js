@@ -10,6 +10,7 @@ const express = require('express')
 const PORT = process.env.PORT || 8080;
 
 const app = express()
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -20,30 +21,17 @@ const update = (doc) => {
     doc.save()
 }
 
-
-
-if(process.env.NODE_ENV == 'production'){
-    app.use(express.static('client/build'))
-
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
-    })
-} else {
-    app.get('/', (req, res) => {
-        res.sendFile(path.join(__dirname, 'client', 'public', 'index.html'))
-    })
-}
-
-
-app.get('/jobs', async (req, res) => {
-    let docs = await QueueItem.find({ time: {$gt: 0}})
-    if(docs.length > 0){
+app.use('/api/jobs', async (req, res) => {
+    let docs = await QueueItem.find({ time: { $gt: 0 } })
+    // console.log(docs)
+    if (docs.length > 0) {
         update(docs[0])
     }
     res.send(docs)
+
 })
 
-app.post('/add-job', async (req, res) => {    
+app.post('/api/add-job', async (req, res) => {
     var newItem = new QueueItem({
         name: req.body.name,
         time: req.body.time,
@@ -52,5 +40,24 @@ app.post('/add-job', async (req, res) => {
     await newItem.save()
     res.redirect('back')
 })
+
+
+app.use(express.static(path.join(__dirname, 'client', 'build')))
+
+console.log(__dirname)
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
+})
+
+// if (process.env.NODE_ENV == 'production') {
+
+// } else {
+//     app.use('/', (req, res) => {
+//         res.sendFile(path.join(__dirname, 'client', 'public', 'index.html'))
+//     })
+
+// }
+
+
 
 app.listen(PORT, () => console.log(`server running at port:${PORT}`))
